@@ -313,15 +313,16 @@ class LammpsSimulation(object):
         else:
             self.bond_style = ""
         angles = set([j['potential'].name for a,b,c,j in list(self.unique_angle_types.values())])
-        if len(list(angles)) > 1:
+        # ALWAYS use hybrid style for angle, since we are defining a harmonic angle outside of this.
+        if len(list(angles)) >= 1:
             self.angle_style = "hybrid %s"%" ".join(list(angles))
-        elif len(list(angles)) == 1:
-            self.angle_style = "%s"%list(angles)[0]
-            for a,b,c,ang in list(self.unique_angle_types.values()):
-                ang['potential'].reduced = True
-                if (ang['potential'].name == "class2"):
-                    ang['potential'].bb.reduced=True
-                    ang['potential'].ba.reduced=True
+        # elif len(list(angles)) == 1:
+        #     self.angle_style = "%s"%list(angles)[0]
+        #     for a,b,c,ang in list(self.unique_angle_types.values()):
+        #         ang['potential'].reduced = True
+        #         if (ang['potential'].name == "class2"):
+        #             ang['potential'].bb.reduced=True
+        #             ang['potential'].ba.reduced=True
         else:
             self.angle_style = ""
 
